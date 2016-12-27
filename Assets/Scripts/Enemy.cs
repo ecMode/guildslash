@@ -45,6 +45,7 @@ namespace Assets.Scripts
                 damagePotential = value;
             }
         }
+        public Double ExperienceToAward { get; set; }
 
         private static Random random = new Random();
         public Enemy() {
@@ -56,8 +57,9 @@ namespace Assets.Scripts
             Intelligence = 10;
             Dexterity = 10;
             Stamina = 10;
-            DamagePotential = new Range<int>(1,5);
+            DamagePotential = new Range<int>(1,3);
             CurrentHP = 10;
+            ExperienceToAward = random.Next(100, 500);
         }
 
         public string toString()

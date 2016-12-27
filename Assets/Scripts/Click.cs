@@ -6,6 +6,7 @@ public class Click : MonoBehaviour {
 
     public UnityEngine.UI.Text killChainDisplay;
     public UnityEngine.UI.Text playerHPDisplay;
+    public UnityEngine.UI.Text playerEXPDisplay;
     public UnityEngine.UI.Text monsterHPDisplay;
     public UnityEngine.UI.Text monsterNameDisplay;
     public int killChain = 0;
@@ -21,6 +22,8 @@ public class Click : MonoBehaviour {
     public void Update()
     {
         playerHPDisplay.text = "HP: " + GameManager.instance.Character.CurrentHP;
+        playerEXPDisplay.text = "EXP: " + GameManager.instance.Character.CurrentExperience +
+            "/" + GameManager.instance.Character.MaxExperience;
         monsterHPDisplay.text = "Enemy HP: " + combatManager.Monster.CurrentHP;
         monsterNameDisplay.text = combatManager.Monster.Name;
         killChainDisplay.text = "Kill Chain: " + killChain;

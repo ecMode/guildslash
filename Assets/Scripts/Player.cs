@@ -19,6 +19,12 @@ namespace Assets.Scripts
         private int dexterity;
         private int stamina;
 
+        public int Level
+        {
+            get { return level; }
+            set { level = value; }
+        }
+
         public int CurrentHP
         {
             get { return currentHP; }
@@ -36,7 +42,25 @@ namespace Assets.Scripts
                 damagePotential = value;
             }
         }
-
+        private double currentExperience;
+        public double CurrentExperience
+        {
+            get
+            {
+                return currentExperience;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    currentExperience = 0;
+                } else
+                {
+                    currentExperience = value;
+                }
+            }
+        }
+        public double MaxExperience { get; set; }
         public Character()
         {
             level = 10;
@@ -47,6 +71,8 @@ namespace Assets.Scripts
             dexterity = 20;
             stamina = 20;
             DamagePotential = new Range<int>(1, 5);
+            CurrentExperience = 1800;
+            MaxExperience = 2000;
         }
 
         private int calculateClassHPModifier()

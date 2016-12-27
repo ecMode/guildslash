@@ -25,24 +25,37 @@ public class CombatManager : MonoBehaviour {
 
     public void CalculateDamage()
     {
-        int playerDamageTaken = CalculatePlayerDamageTaken();
-        if(playerDamageTaken >= GameManager.instance.Character.CurrentHP)
-        {
-            GameManager.instance.Character.CurrentHP = 0;
-        }
-        else
-        {
-            GameManager.instance.Character.CurrentHP -= playerDamageTaken;
-        }
-
         int monsterDamageTaken = CalculateEnemyDamageTaken();
         if (monsterDamageTaken >= Monster.CurrentHP)
         {
+            // Enemy was killed
             Monster.CurrentHP = 0;
+            GameManager.instance.Character.CurrentExperience += Monster.ExperienceToAward;
+
+            // Player gained a level
+            if (GameManager.instance.Character.CurrentExperience > GameManager.instance.Character.MaxExperience)
+            {
+                double diffExperience = GameManager.instance.Character.CurrentExperience - GameManager.instance.Character.MaxExperience;
+                GameManager.instance.Character.Level += 1;
+                GameManager.instance.Character.CurrentExperience = diffExperience;
+            }
+            return;
         }
         else
         {
             Monster.CurrentHP -= monsterDamageTaken;
+        }
+
+        int playerDamageTaken = CalculatePlayerDamageTaken();
+        if(playerDamageTaken >= GameManager.instance.Character.CurrentHP)
+        {
+            //Player was killed
+            GameManager.instance.Character.CurrentHP = 0;
+            GameManager.instance.Character.CurrentExperience -= 3000;
+        }
+        else
+        {
+            GameManager.instance.Character.CurrentHP -= playerDamageTaken;
         }
     }
 
