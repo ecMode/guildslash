@@ -149,17 +149,25 @@ namespace Assets.Scripts
             Stamina = 10;
             MaxHP = CurrentHP = CalculateMaxHP();
             MaxMP = CurrentMP = CalculateMaxMP();
-            CurrentExperience = 1800;
-            MaxExperience = 2000;
+            CurrentExperience = 0;
+            MaxExperience = CalculateMaxExperience();
             EquippedWeapon = new Weapon();
             Name = "FuckYou";
         }
 
         private int CalculateClassHPModifier()
         {
-            if (characterClass == Classes.Mage)
-                return 2;
-            return 0;
+            switch (characterClass)
+            {
+                case Classes.MAGE:
+                    return 0;
+                case Classes.WARRIOR:
+                    return 2;
+                case Classes.ROGUE:
+                    return 1;
+                default:
+                    return 0;
+            }
         }
 
         private int CalculateMaxHP()
@@ -171,9 +179,17 @@ namespace Assets.Scripts
 
         private int CalculateClassMPModifier()
         {
-            if (characterClass == Classes.Mage)
-                return 2;
-            return 0;
+            switch(characterClass)
+            {
+                case Classes.MAGE:
+                    return 2;
+                case Classes.WARRIOR:
+                    return 0;
+                case Classes.ROGUE:
+                    return 1;
+                default:
+                    return 0;
+            }
         }
 
         private int CalculateMaxMP()
@@ -185,19 +201,19 @@ namespace Assets.Scripts
 
         public void LevelUp()
         {
-            Level++;
+            level++;
             MaxHP = CurrentHP = CalculateMaxHP();
             MaxMP = CurrentMP = CalculateMaxMP();
-            MaxExperience = 4000;
+            MaxExperience = CalculateMaxExperience();
             Intelligence += 1;
             Dexterity += 1;
             Strength += 1;
             Stamina += 1;
         }
 
-        private void CalculateMaxExperience()
+        private double CalculateMaxExperience()
         {
-
+            return Math.Pow(level,2) / .05;
         }
     }
 }

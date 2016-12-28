@@ -4,12 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     public static GameManager instance = null;
-    public Player Player { get; set; }
-    public Enemy Monster { get; set; }
-    public UnityEngine.UI.Text playerName;
+    private Player player;
+    public Player Player {
+        get
+        {
+            return player;
+        }
+        set
+        {
+            player = value;
+        }
+    }
     private double lastSecond = 0;
     public GameStates GameState { get; set; }
 
@@ -27,7 +35,6 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        playerName.text = Player.Name;
         // hp regen should be done server side probs
         double seconds = Math.Floor(Time.time);
         if (lastSecond < seconds && seconds % 3 == 0 && GameState == GameStates.OUTOFCOMBAT && Player.CurrentHP < Player.MaxHP)

@@ -3,52 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts;
+using UnityEngine.SceneManagement;
 
-public class DamageTaken
+public class CombatManager : MonoBehaviour
 {
-    public int PlayerDamageTaken { get; set; }
-    public bool PlayerCriticalStrike { get; set; }
-    public int EnemyDamageTaken { get; set; }
-    public bool EnemyCriticalStrike { get; set; }
-
-    public DamageTaken(int playerDamageTaken, bool playerCriticalStrike, 
-        int enemyDamageTaken, bool enemyCriticalStrike)
-    {
-        PlayerDamageTaken = playerDamageTaken;
-        PlayerCriticalStrike = playerCriticalStrike;
-        EnemyDamageTaken = enemyDamageTaken;
-        EnemyCriticalStrike = enemyCriticalStrike;
-    }
-}
-public class CombatManager
-{
+    public static CombatManager instance = null;
     private static System.Random random = new System.Random();
-    private Enemy monster;
-    public Enemy Monster
+    private Enemy enemy;
+    public Enemy Enemy
     {
         get
         {
-            return monster;
+            return enemy;
         }
         set
         {
-            monster = value;
+            enemy = value;
         }
     }
 
     // Use this for initialization
     void Awake ()
     {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
     }
 
     public DamageTaken CalculateDamage()
     {
         DamageTaken damageTaken = CalculateEnemyDamageTaken();
-        if (damageTaken.EnemyDamageTaken >= Monster.CurrentHP)
+        if (damageTaken.EnemyDamageTaken >= Enemy.CurrentHP)
         {
             // Enemy was killed
-            Monster.CurrentHP = 0;
-            GameManager.instance.Player.CurrentExperience += Monster.ExperienceToAward;
+            Enemy.CurrentHP = 0;
+            GameManager.instance.Player.CurrentExperience += Enemy.ExperienceToAward;
 
             // Player gained a level
             if (GameManager.instance.Player.CurrentExperience > GameManager.instance.Player.MaxExperience)
@@ -61,7 +51,7 @@ public class CombatManager
         }
         else
         {
-            Monster.CurrentHP -= damageTaken.EnemyDamageTaken;
+            Enemy.CurrentHP -= damageTaken.EnemyDamageTaken;
         }
 
         damageTaken = CalculatePlayerDamageTaken(damageTaken);
@@ -70,6 +60,7 @@ public class CombatManager
             //Player was killed
             GameManager.instance.Player.CurrentHP = 0;
             GameManager.instance.Player.CurrentExperience -= 3000;
+            SceneManager.LoadScene("Death");
         }
         else
         {
@@ -89,7 +80,7 @@ public class CombatManager
 
     private DamageTaken CalculatePlayerDamageTaken(DamageTaken damageTaken)
     {
-        damageTaken.PlayerDamageTaken = Monster.DamagePotential.nextInt();
+        damageTaken.PlayerDamageTaken = Enemy.DamagePotential.nextInt();
         return damageTaken;
     }
 

@@ -7,6 +7,10 @@ namespace Assets.Scripts
 {
     enum Classes
     {
-        Mage = 0
+        MAGE,
+        WARRIOR,
+        ROGUE,
+        PALADIN,
+        WARLOCK
     }
 }
