@@ -2,10 +2,16 @@
 /// <typeparam name="T">Generic parameter.</typeparam>
 public class Range<T> where T : System.IComparable<T>
 {
-    public Range(int min,int max)
+    public Range(int min, int max)
     {
         Minimum = min;
         Maximum = max;
+    }
+
+    public Range(int min, double max)
+    {
+        Minimum = min;
+        Maximum = (int)max;
     }
     /// <summary>Minimum value of the range.</summary>
     public int Minimum { get; set; }
@@ -18,6 +24,11 @@ public class Range<T> where T : System.IComparable<T>
     public override string ToString()
     {
         return string.Format("[{0} - {1}]", this.Minimum, this.Maximum);
+    }
+
+    public Range<int> addRange(Range<int> range)
+    {
+        return new Range<int>(this.Minimum + range.Minimum, this.Maximum + range.Maximum);
     }
 
     /// <summary>Determines if the range is valid.</summary>
