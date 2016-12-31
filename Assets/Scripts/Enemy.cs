@@ -71,20 +71,24 @@ public class Enemy
         Dexterity = 10;
         Stamina = 10;
         ExperienceToAward = CalculateEXPAwarded();
-		equippedWeapon = CreateRandomWeapon ();
+		equippedWeapon = CreateRandomWeapon();
     }
 
 	public int CalculateDamage() {
 		return random.Next (0 + equippedWeapon.MinDamage, 3 + equippedWeapon.MaxDamage);
 	}
 
-	public BaseWeapon CreateRandomWeapon() {
-		BaseWeapon.WeaponTypes weaponType = BaseWeapon.WeaponTypes[random.Next (0, 0)];
-		switch(weaponType) {
-		case BaseWeapon.WeaponTypes.AXE:
-			return new Axe ();
-		default:
-			return new Axe ();
+	public BaseWeapon CreateRandomWeapon()
+    {
+		BaseWeapon.WeaponTypes weaponType = (BaseWeapon.WeaponTypes)random.Next(0, 1);
+		switch(weaponType)
+        {
+            case BaseWeapon.WeaponTypes.AXE:
+                return new Axe(Level);
+            case BaseWeapon.WeaponTypes.SWORD:
+                return new Sword(Level);
+            default:
+			    return new Sword(Level);
 		}
 	}
 

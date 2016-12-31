@@ -39,35 +39,36 @@ public class BaseItem
 		MANA_PER_KILL
 	}
 
-	int[] items = new int[10](10, 20, 30, 40, 60, 80, 95);
+    List<int> items = new List<int>() { 95, 80, 60, 40, 30, 20, 10 };
 	private int Weighted()
 	{
 		int range = 0;
-		for (int i = 0; i < items.Length; i++)
+		for (int i = 0; i < items.Count; i++)
 			range += items[i];
 
 		int rand = random.Next (0, range);
 		int top = 0;
 
-		for (int i = 0; i < items.Length; i++)
+		for (int i = 0; i < items.Count; i++)
 		{
 			top += items [i];
 			if (rand < top)
 				return i;
 		}
+        return 0;
 	}
 
 
 	public BaseItem(int level){
 		levelRequirement = level;
-		modifier = Modifiers[Weighted()];
-		RollStats ();
-		RollStatValues ();
+		modifier = (Modifiers)Weighted();
+		ItemStats = RollStats ();
+		ItemStatValues = RollStatValues ();
 
 	}
 
 	public BaseItem(){
-		modifier = Modifiers[Weighted()];
+		modifier = (Modifiers)Weighted();
 		RollStats ();
 	}
 
@@ -81,9 +82,16 @@ public class BaseItem
 	public List<Stats> ItemStats {
 		get { return itemStats; }
 		set {itemStats = value; }
-	}
+    }
 
-	private Modifiers modifier;
+    private List<int> itemStatValues;
+    public List<int> ItemStatValues
+    {
+        get { return itemStatValues; }
+        set { itemStatValues = value; }
+    }
+
+    private Modifiers modifier;
 	public Modifiers Modifier{
 		get { return modifier; }
 		set { modifier = value; }
@@ -95,17 +103,19 @@ public class BaseItem
 		set { levelRequirement = value; }
 	}
 
-	public Stats GetStat(Stats stat){
-		return this.ItemStats.Find (stat);
+	public int GetStatValue(Stats stat){
+        if (!itemStats.Contains(stat))
+            return 0;
+		return ItemStatValues[(int)stat + 1];
 	}
 
 	public List<Stats> RollStats()
 	{
 		List<Stats> stats = new List<Stats> ();
 		int modRange = Enum.GetNames (typeof(Modifiers)).Length;
-		for (int i = 0; i < Modifier; i++) {
+		for (int i = 0; i < (int)Modifier; i++) {
 			int statsIndex = random.Next (0, Enum.GetNames (typeof(Stats)).Length);
-			stats.Add(Stats [statsIndex]);
+			stats.Add((Stats)statsIndex);
 		}
 		return stats;
 	}
@@ -113,11 +123,13 @@ public class BaseItem
 	protected List<int> RollStatValues()
 	{
 		List<int> statValues = new List<int> ();
+        if (itemStats == null)
+            return statValues;
 		int statValue;
 		foreach (Stats stat in itemStats) {
-			if (stat == Stats.STRENGTH || Stats == Stats.DEXTERITY || Stats.INTELLIGENCE || Stats.STAMINA)
+			if (stat == Stats.STRENGTH || stat == Stats.DEXTERITY || stat == Stats.INTELLIGENCE || stat == Stats.STAMINA)
 				statValue = RollAttributeStat ();
-			else if (stat = Stats.ENHANCED_EFFECT)
+			else if (stat == Stats.ENHANCED_EFFECT)
 				statValue = RollEnhancedEffectStat();
 			else 
 				statValue = RollAccessoryStat();
@@ -128,7 +140,7 @@ public class BaseItem
 
 	private int RollAttributeStat()
 	{
-		return random.Next(0, Math.Ceiling(x/5)*5);
+		return random.Next(0, (int)Math.Ceiling(levelRequirement/5d)*5);
 	}
 
 	private int RollEnhancedEffectStat()

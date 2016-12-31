@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class Axe : BaseWeapon
+public class Sword : BaseWeapon
 {
 
-	public Axe(int level) : base(level, 2, .15) {}
+	public Sword(int level) : base(level, 2, .85) {}
 }
 

@@ -48,12 +48,12 @@ public class GameManager : MonoBehaviour
 
         if ((combatMenu != null && outOfCombatMenu != null) && GameState == GameStates.INCOMBAT)
         {
-            combatMenu.enabled = true;
-            outOfCombatMenu.enabled = false;
+            //combatMenu.enabled = true;
+            //outOfCombatMenu.enabled = false;
         } else
         {
-            combatMenu.enabled = false;
-            outOfCombatMenu.enabled = true;
+            //combatMenu.enabled = false;
+            //outOfCombatMenu.enabled = true;
         }
     }
 

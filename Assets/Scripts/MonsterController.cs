@@ -8,7 +8,6 @@ public class MonsterController {
 	// Use this for initialization
 	public Enemy SpawnMonster () {
         Enemy monster = new Enemy();
-		print(monster);
         return monster;
 	}
 	

@@ -5,14 +5,14 @@ using System.Text;
 
 public class BaseWeapon : BaseItem
 {
-	protected int randomFactor;
-	protected int itemScale;
+	protected double randomFactor;
+	protected double itemScale;
 
 	private static Random random = new Random();
 	public enum WeaponTypes {
 		AXE,
-		DAGGER,
-		SWORD
+        SWORD,
+        DAGGER
 	}
 
 	private int damage;
@@ -21,18 +21,24 @@ public class BaseWeapon : BaseItem
 		set { damage = value; }
 	}
 	public int MinDamage {
-		get{ return (1 - randomFactor) * Damage; }
+		get{ return (int)Math.Round((1 - randomFactor) * Damage); }
 	}
 
 	public int MaxDamage {
-		get{ return (1 + randomFactor) * Damage; }
+		get{ return (int)Math.Round((1 + randomFactor) * Damage); }
 	}
 
 	public int CalculateDamage() {
-		return LevelRequirement * itemScale * GetStat(Stats.ENHANCED_EFFECT);
+        int enhancedEffect = GetStatValue(Stats.ENHANCED_EFFECT);
+        if (enhancedEffect == 0)
+            return (int)Math.Round(LevelRequirement * itemScale);
+        else
+            return (int)Math.Round(LevelRequirement * itemScale * (enhancedEffect / 100));
 	}
 
-	public BaseWeapon(int level) : base(level) {
+	public BaseWeapon(int level, double itemScale, double randomFactor) : base(level) {
+        this.itemScale = itemScale;
+        this.randomFactor = randomFactor;
 		damage = CalculateDamage ();
 	}
 }

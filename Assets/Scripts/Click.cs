@@ -14,6 +14,7 @@ public class Click : MonoBehaviour {
     public void Awake()
     {
         CombatManager.instance.Enemy = monsterController.SpawnMonster();
+        printEnemyStuff();
         GameManager.instance.GameState = GameManager.GameStates.INCOMBAT;
     }
 
@@ -48,8 +49,21 @@ public class Click : MonoBehaviour {
         if (CombatManager.instance.Enemy.CurrentHP == 0)
         {
             CombatManager.instance.Enemy = monsterController.SpawnMonster();
+            printEnemyStuff();
             killChain += 1;
         }
         damageTaken = CombatManager.instance.CalculateDamage();
+    }
+
+    private void printEnemyStuff()
+    {
+        print("dmg range: " + CombatManager.instance.Enemy.EquippedWeapon.MinDamage + "-" + CombatManager.instance.Enemy.EquippedWeapon.MaxDamage);
+        print("dmg: " + CombatManager.instance.Enemy.EquippedWeapon.Damage);
+        print("level: " + CombatManager.instance.Enemy.Level);
+        for (int i= 0; i < CombatManager.instance.Enemy.EquippedWeapon.ItemStats.Count; i++)
+        {
+            print(CombatManager.instance.Enemy.EquippedWeapon.ItemStats[i] + "=" + CombatManager.instance.Enemy.EquippedWeapon.ItemStatValues[i]);
+        }
+        print("mod: " + CombatManager.instance.Enemy.EquippedWeapon.Modifier);
     }
 }
