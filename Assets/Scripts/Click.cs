@@ -59,6 +59,7 @@ public class Click : MonoBehaviour {
     {
         print("dmg range: " + CombatManager.instance.Enemy.EquippedWeapon.MinDamage + "-" + CombatManager.instance.Enemy.EquippedWeapon.MaxDamage);
         print("dmg: " + CombatManager.instance.Enemy.EquippedWeapon.Damage);
+		print("EE value: " + CombatManager.instance.Enemy.EquippedWeapon.ItemStatValues[CombatManager.instance.Enemy.EquippedWeapon.ItemStats.IndexOf(BaseItem.Stats.ENHANCED_EFFECT)]);
         print("level: " + CombatManager.instance.Enemy.Level);
         for (int i= 0; i < CombatManager.instance.Enemy.EquippedWeapon.ItemStats.Count; i++)
         {

@@ -6,6 +6,12 @@ using System.Text;
 public class Axe : BaseWeapon
 {
 
-	public Axe(int level) : base(level, 2, .15) {}
+	public Axe(int level) : base(level) {
+		if (level == 1)
+			itemScale = 5;
+		else
+			itemScale = 1.5;
+		randomFactor = .1;
+	}
 }
 

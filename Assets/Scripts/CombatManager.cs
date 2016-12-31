@@ -82,7 +82,6 @@ public class CombatManager : MonoBehaviour
     private DamageTaken CalculatePlayerDamageTaken(DamageTaken damageTaken)
     {
 		damageTaken.PlayerDamageTaken = Enemy.CalculateDamage();
-        print(damageTaken.PlayerDamageTaken);
         return damageTaken;
     }
 

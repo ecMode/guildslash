@@ -104,19 +104,27 @@ public class BaseItem
 	}
 
 	public int GetStatValue(Stats stat){
-        if (!itemStats.Contains(stat))
+        if (!ItemStats.Contains(stat))
             return 0;
-		return ItemStatValues[(int)stat + 1];
+		return ItemStatValues[itemStats.IndexOf(stat)];
 	}
 
 	public List<Stats> RollStats()
 	{
 		List<Stats> stats = new List<Stats> ();
 		int modRange = Enum.GetNames (typeof(Modifiers)).Length;
-		for (int i = 0; i < (int)Modifier; i++) {
+		stats.Add (Stats.ENHANCED_EFFECT);
+		while (stats.Count < (int)Modifier) 
+		{
 			int statsIndex = random.Next (0, Enum.GetNames (typeof(Stats)).Length);
-			stats.Add((Stats)statsIndex);
+			if (!stats.Contains((Stats)statsIndex))
+				stats.Add((Stats)statsIndex);
 		}
+
+		//for (int i = 0; i < (int)Modifier; i++) {
+		//	int statsIndex = random.Next (0, Enum.GetNames (typeof(Stats)).Length);
+		//	stats.Add((Stats)statsIndex);
+		//}
 		return stats;
 	}
 
@@ -128,29 +136,29 @@ public class BaseItem
 		int statValue;
 		foreach (Stats stat in itemStats) {
 			if (stat == Stats.STRENGTH || stat == Stats.DEXTERITY || stat == Stats.INTELLIGENCE || stat == Stats.STAMINA)
-				statValue = RollAttributeStat ();
+				statValue = RollAttributeStatValue();
 			else if (stat == Stats.ENHANCED_EFFECT)
-				statValue = RollEnhancedEffectStat();
+				statValue = RollEnhancedEffectStatValue();
 			else 
-				statValue = RollAccessoryStat();
+				statValue = RollAccessoryStatValue();
 			statValues.Add (statValue);
 		}
 		return statValues;
 	}
 
-	private int RollAttributeStat()
+	private int RollAttributeStatValue()
 	{
-		return random.Next(0, (int)Math.Ceiling(levelRequirement/5d)*5);
+		return random.Next(1, (int)Math.Ceiling(levelRequirement/5d)*5);
 	}
 
-	private int RollEnhancedEffectStat()
+	private int RollEnhancedEffectStatValue()
 	{
-		return random.Next(0, LevelRequirement * 20);
+		return random.Next(1, 40 + ((int)Math.Ceiling(levelRequirement/5d) * 20));
 	}
 
-	private int RollAccessoryStat()
+	private int RollAccessoryStatValue()
 	{
-		return random.Next(0, LevelRequirement * 20);
+		return random.Next(1, (int)Math.Ceiling(levelRequirement/5d) * 5);
 	}
 }
 

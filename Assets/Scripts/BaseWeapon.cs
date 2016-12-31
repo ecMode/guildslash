@@ -17,8 +17,7 @@ public class BaseWeapon : BaseItem
 
 	private int damage;
 	public int Damage {
-		get { return damage; }
-		set { damage = value; }
+		get { return CalculateDamage(); }
 	}
 	public int MinDamage {
 		get{ return (int)Math.Round((1 - randomFactor) * Damage); }
@@ -33,13 +32,10 @@ public class BaseWeapon : BaseItem
         if (enhancedEffect == 0)
             return (int)Math.Round(LevelRequirement * itemScale);
         else
-            return (int)Math.Round(LevelRequirement * itemScale * (enhancedEffect / 100));
+			return (int)Math.Round(LevelRequirement * itemScale * (1 + (enhancedEffect / 100)));
 	}
 
-	public BaseWeapon(int level, double itemScale, double randomFactor) : base(level) {
-        this.itemScale = itemScale;
-        this.randomFactor = randomFactor;
-		damage = CalculateDamage ();
+	public BaseWeapon(int level) : base(level) {
 	}
 }
 

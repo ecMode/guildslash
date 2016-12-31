@@ -208,9 +208,9 @@ namespace Assets.Scripts
 
         private int CalculateMaxHP()
         {
-            int staminaMod = Stamina * 10;
+            int staminaMod = Stamina * 5;
             int levelMod = level * CalculateClassHPModifier();
-            return Stamina + levelMod;
+			return staminaMod + levelMod;
         }
 
         private int CalculateClassMPModifier()

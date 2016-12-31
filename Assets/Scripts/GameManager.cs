@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         // hp regen should be done server side probs
 		// alternative https://youtu.be/xrv7ubLSaws?t=1255
         double seconds = Math.Floor(Time.time);
-        if (lastSecond < seconds && seconds % 3 == 0 && GameState == GameStates.OUTOFCOMBAT && Player.CurrentHP < Player.MaxHP)
+        if (lastSecond < seconds && seconds % 1 == 0 && GameState == GameStates.OUTOFCOMBAT && Player.CurrentHP < Player.MaxHP)
         {
             Player.CurrentHP++;
             lastSecond = seconds;

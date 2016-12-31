@@ -80,7 +80,7 @@ public class Enemy
 
 	public BaseWeapon CreateRandomWeapon()
     {
-		BaseWeapon.WeaponTypes weaponType = (BaseWeapon.WeaponTypes)random.Next(0, 1);
+		BaseWeapon.WeaponTypes weaponType = (BaseWeapon.WeaponTypes)random.Next(0, 2);
 		switch(weaponType)
         {
             case BaseWeapon.WeaponTypes.AXE:
