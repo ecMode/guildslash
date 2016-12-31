@@ -7,6 +7,8 @@ using Assets.Scripts;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
+    public Canvas combatMenu;
+    public Canvas outOfCombatMenu;
     private Player player;
     public Player Player {
         get
@@ -44,6 +46,15 @@ public class GameManager : MonoBehaviour
             lastSecond = seconds;
         }
 
+        if ((combatMenu != null && outOfCombatMenu != null) && GameState == GameStates.INCOMBAT)
+        {
+            combatMenu.enabled = true;
+            outOfCombatMenu.enabled = false;
+        } else
+        {
+            combatMenu.enabled = false;
+            outOfCombatMenu.enabled = true;
+        }
     }
 
     public enum GameStates {

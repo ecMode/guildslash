@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,11 @@ public class Enemy
     public int Strength { get; set; }
     public int Intelligence { get; set; }
     public int Dexterity { get; set; }
-    public int Stamina { get; set; }
+    public int Stamina
+    {
+        get { return stamina; }
+        set { stamina = value; }
+    }
     public int CurrentHP { get; set; }
     public int Level {
         get
@@ -52,9 +57,14 @@ public class Enemy
 
     public Enemy() {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Name = new string(Enumerable.Repeat(chars, 5)
+        Range<int> levelModifier = new Range<int>(level, level + 5);
+        name = new string(Enumerable.Repeat(chars, 5)
             .Select(s => s[random.Next(s.Length)]).ToArray());
-        Level = GameManager.instance.Player.Level;
+        level = GameManager.instance.Player.Level;
+        strength = 10 + levelModifier.nextInt();
+        intelligence = 10 + levelModifier.nextInt();
+        dexterity = 10 + levelModifier.nextInt();
+        stamina = 10 + levelModifier.nextInt();
         MaxHP = CurrentHP = CalculateMaxHP();
         Strength = 10;
         Intelligence = 10;
@@ -80,7 +90,7 @@ public class Enemy
 
     private int CalculateMaxHP()
     {
-        return (Level * 2 + 5);
+        return (Level * 2) + stamina;
     }
 
     private double CalculateEXPAwarded()

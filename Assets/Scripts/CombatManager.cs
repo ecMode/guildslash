@@ -41,12 +41,13 @@ public class CombatManager : MonoBehaviour
             GameManager.instance.Player.CurrentExperience += Enemy.ExperienceToAward;
 
             // Player gained a level
-            if (GameManager.instance.Player.CurrentExperience > GameManager.instance.Player.MaxExperience)
+            if (GameManager.instance.Player.CurrentExperience >= GameManager.instance.Player.MaxExperience)
             {
                 double diffExperience = GameManager.instance.Player.CurrentExperience - GameManager.instance.Player.MaxExperience;
                 GameManager.instance.Player.CurrentExperience = diffExperience;
                 GameManager.instance.Player.LevelUp();
             }
+            // Player doesn't take damage
             return damageTaken;
         }
         else
@@ -72,7 +73,7 @@ public class CombatManager : MonoBehaviour
     private DamageTaken CalculateEnemyDamageTaken()
     {
         int randomInt = random.Next(0, 100);
-        bool isCriticalStrike = randomInt <= GameManager.instance.Player.Dexterity * .5;
+        bool isCriticalStrike = randomInt <= (GameManager.instance.Player.CriticalStrikeChance * 100);
         int unModifiedPlayerDamage = GameManager.instance.Player.DamagePotential.nextInt();
         int modifiedPlayerDamage = isCriticalStrike ? (int)Math.Floor(unModifiedPlayerDamage * 1.5) : unModifiedPlayerDamage;
         return new DamageTaken(0, isCriticalStrike, modifiedPlayerDamage, false);

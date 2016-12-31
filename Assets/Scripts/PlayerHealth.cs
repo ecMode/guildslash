@@ -20,7 +20,7 @@ public class PlayerHealth : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        playerHPDisplay.text = "HP: " + GameManager.instance.Player.CurrentHP;
+        playerHPDisplay.text = "HP: " + GameManager.instance.Player.CurrentHP + "/" + GameManager.instance.Player.MaxHP;
         int remainder = GameManager.instance.Player.CurrentHP * 100 / GameManager.instance.Player.MaxHP;
         healthSlider.value = remainder;
         percentHealthDisplay.text = remainder + "%";

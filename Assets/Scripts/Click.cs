@@ -14,7 +14,6 @@ public class Click : MonoBehaviour {
     public void Awake()
     {
         CombatManager.instance.Enemy = monsterController.SpawnMonster();
-        print(CombatManager.instance.Enemy.ExperienceToAward);
         GameManager.instance.GameState = GameManager.GameStates.INCOMBAT;
     }
 

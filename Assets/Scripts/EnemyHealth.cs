@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        enemyHPDisplay.text = "HP: " + CombatManager.instance.Enemy.CurrentHP;
+        enemyHPDisplay.text = "HP: " + CombatManager.instance.Enemy.CurrentHP + "/" + CombatManager.instance.Enemy.MaxHP;
         int remainder = CombatManager.instance.Enemy.CurrentHP * 100 / CombatManager.instance.Enemy.MaxHP;
         healthSlider.value = remainder;
         percentHealthDisplay.text = remainder + "%";
