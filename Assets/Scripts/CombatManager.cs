@@ -80,7 +80,7 @@ public class CombatManager : MonoBehaviour
 
     private DamageTaken CalculatePlayerDamageTaken(DamageTaken damageTaken)
     {
-        damageTaken.PlayerDamageTaken = Enemy.DamagePotential.nextInt();
+		damageTaken.PlayerDamageTaken = Enemy.CalculateDamage();
         return damageTaken;
     }
 

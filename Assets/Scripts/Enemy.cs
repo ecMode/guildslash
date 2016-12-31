@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 public class Enemy
 {
+	private static Random random = new Random();
     private int currentHP;
     private int maxHP;
     private int currentMP;
@@ -42,22 +42,14 @@ public class Enemy
             name = value;
         }
     }
-
-    private Range<int> damagePotential;
-    public Range<int> DamagePotential
-    {
-        get
-        {
-            return damagePotential;
-        }
-        set
-        {
-            damagePotential = value;
-        }
-    }
+		
     public Double ExperienceToAward { get; set; }
+	private BaseWeapon equippedWeapon;
+	public BaseWeapon EquippedWeapon {
+		get { return equippedWeapon; }
+		set { equippedWeapon = value; }
+	}
 
-    private static Random random = new Random();
     public Enemy() {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Name = new string(Enumerable.Repeat(chars, 5)
@@ -68,9 +60,23 @@ public class Enemy
         Intelligence = 10;
         Dexterity = 10;
         Stamina = 10;
-        DamagePotential = new Range<int>(1,3);
         ExperienceToAward = CalculateEXPAwarded();
+		equippedWeapon = CreateRandomWeapon ();
     }
+
+	public int CalculateDamage() {
+		return random.Next (0 + equippedWeapon.MinDamage, 3 + equippedWeapon.MaxDamage);
+	}
+
+	public BaseWeapon CreateRandomWeapon() {
+		BaseWeapon.WeaponTypes weaponType = BaseWeapon.WeaponTypes[random.Next (0, 0)];
+		switch(weaponType) {
+		case BaseWeapon.WeaponTypes.AXE:
+			return new Axe ();
+		default:
+			return new Axe ();
+		}
+	}
 
     private int CalculateMaxHP()
     {
