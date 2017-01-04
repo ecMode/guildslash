@@ -4,97 +4,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class Enemy
+public class Enemy : BaseEntity
 {
 	private static Random random = new Random();
-    private int currentHP;
-    private int maxHP;
-    private int currentMP;
-    private int strength;
-    private int intelligence;
-    private int dexterity;
-    private int stamina;
-    private int level;
-    public int MaxHP { get; set; }
-    public int Strength { get; set; }
-    public int Intelligence { get; set; }
-    public int Dexterity { get; set; }
-    public int Stamina
-    {
-        get { return stamina; }
-        set { stamina = value; }
-    }
-    public int CurrentHP { get; set; }
-    public int Level {
-        get
-        {
-            return level;
-        }
-        set
-        {
-            level = value;
-        }
-    }
-    private string name;
-    public string Name
-    {
-        get
-        {
-            return name;
-        }
-        set
-        {
-            name = value;
-        }
-    }
+    private List<string> names = new List<string> {
+        "Rogue Two",
+        "Acid Spitter",
+        "Fancy Pants",
+        "Berserker",
+        "Archer",
+        "The Malevolent One"
+    };
 		
     public Double ExperienceToAward { get; set; }
-	private BaseWeapon equippedWeapon;
-	public BaseWeapon EquippedWeapon {
-		get { return equippedWeapon; }
-		set { equippedWeapon = value; }
-	}
 
-    public Enemy() {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    public Enemy(int level) {
+        /*const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Name = new string(Enumerable.Repeat(chars, 5)
+            .Select(s => s[random.Next(s.Length)]).ToArray());*/
+        Name = names[random.Next(names.Count)];
         Range<int> levelModifier = new Range<int>(level, level + 5);
-        name = new string(Enumerable.Repeat(chars, 5)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-        level = GameManager.instance.Player.Level;
-        strength = 10 + levelModifier.nextInt();
-        intelligence = 10 + levelModifier.nextInt();
-        dexterity = 10 + levelModifier.nextInt();
-        stamina = 10 + levelModifier.nextInt();
+        Level = level;
+        Strength = 10 + levelModifier.nextInt();
+        Intelligence = 10 + levelModifier.nextInt();
+        Dexterity = 10 + levelModifier.nextInt();
+        Stamina = 10 + levelModifier.nextInt();
         MaxHP = CurrentHP = CalculateMaxHP();
-        Strength = 10;
-        Intelligence = 10;
-        Dexterity = 10;
-        Stamina = 10;
         ExperienceToAward = CalculateEXPAwarded();
-		equippedWeapon = CreateRandomWeapon();
+		EquippedWeapon = CreateRandomWeapon();
     }
-
-	public int CalculateDamage() {
-		return random.Next (0 + equippedWeapon.MinDamage, 3 + equippedWeapon.MaxDamage);
-	}
 
 	public BaseWeapon CreateRandomWeapon()
     {
-		BaseWeapon.WeaponTypes weaponType = (BaseWeapon.WeaponTypes)random.Next(0, 2);
+		BaseWeapon.WeaponTypes weaponType = (BaseWeapon.WeaponTypes)random.Next(0, 10);
+        BaseWeapon weapon;
 		switch(weaponType)
         {
             case BaseWeapon.WeaponTypes.AXE:
-                return new Axe(Level);
+                weapon = new Axe(Level);
+                weapon.RandomizeStats();
+                return weapon;
             case BaseWeapon.WeaponTypes.SWORD:
-                return new Sword(Level);
+                weapon = new Sword(Level);
+                weapon.RandomizeStats();
+                return weapon;
             default:
-			    return new Sword(Level);
+			    return null;
 		}
 	}
 
     private int CalculateMaxHP()
     {
-        return (Level * 2) + stamina;
+        return (Level * 2) + Stamina;
     }
 
     private double CalculateEXPAwarded()

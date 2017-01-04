@@ -15,10 +15,10 @@ public class BaseWeapon : BaseItem
         DAGGER
 	}
 
-	private int damage;
 	public int Damage {
 		get { return CalculateDamage(); }
 	}
+
 	public int MinDamage {
 		get{ return (int)Math.Round((1 - randomFactor) * Damage); }
 	}
@@ -32,7 +32,7 @@ public class BaseWeapon : BaseItem
         if (enhancedEffect == 0)
             return (int)Math.Round(LevelRequirement * itemScale);
         else
-			return (int)Math.Round(LevelRequirement * itemScale * (1 + (enhancedEffect / 100)));
+            return (int)Math.Round(LevelRequirement * itemScale * (1 + ((double)enhancedEffect / (double)100)));
 	}
 
 	public BaseWeapon(int level) : base(level) {

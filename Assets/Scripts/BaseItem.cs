@@ -39,43 +39,50 @@ public class BaseItem
 		MANA_PER_KILL
 	}
 
-    List<int> items = new List<int>() { 95, 80, 60, 40, 30, 20, 10 };
+    List<int> modifierWeight = new List<int>() {
+        95, // Normal 
+        80, // Magical
+        60, // Angelical
+        40, // Rare
+        30, // Mythical
+        20, // Arcane
+        10  // Epic
+    };
 	private int Weighted()
 	{
 		int range = 0;
-		for (int i = 0; i < items.Count; i++)
-			range += items[i];
+		for (int i = 0; i < modifierWeight.Count; i++)
+			range += modifierWeight[i];
 
 		int rand = random.Next (0, range);
 		int top = 0;
 
-		for (int i = 0; i < items.Count; i++)
+		for (int i = 0; i < modifierWeight.Count; i++)
 		{
-			top += items [i];
+			top += modifierWeight[i];
 			if (rand < top)
 				return i;
 		}
         return 0;
 	}
 
+    public void RandomizeStats()
+    {
+        modifier = (Modifiers)Weighted();
+        ItemStats = RollStats();
+        ItemStatValues = RollStatValues();
+    }
 
 	public BaseItem(int level){
-		levelRequirement = level;
-		modifier = (Modifiers)Weighted();
-		ItemStats = RollStats ();
-		ItemStatValues = RollStatValues ();
-
-	}
+        if (level < 5)
+            LevelRequirement = 0;
+        else
+		    LevelRequirement = (int)Math.Ceiling(level / 5d) * 5;
+    }
 
 	public BaseItem(){
 		modifier = (Modifiers)Weighted();
 		RollStats ();
-	}
-
-	private Dictionary<Stats, int> statsMap;
-	public Dictionary<Stats, int> StatsMap {
-		get { return statsMap; }
-		set { statsMap = value; }
 	}
 
 	private List<Stats> itemStats;
@@ -104,7 +111,7 @@ public class BaseItem
 	}
 
 	public int GetStatValue(Stats stat){
-        if (!ItemStats.Contains(stat))
+        if (ItemStats == null || !ItemStats.Contains(stat))
             return 0;
 		return ItemStatValues[itemStats.IndexOf(stat)];
 	}
@@ -113,18 +120,12 @@ public class BaseItem
 	{
 		List<Stats> stats = new List<Stats> ();
 		int modRange = Enum.GetNames (typeof(Modifiers)).Length;
-		stats.Add (Stats.ENHANCED_EFFECT);
 		while (stats.Count < (int)Modifier) 
 		{
 			int statsIndex = random.Next (0, Enum.GetNames (typeof(Stats)).Length);
 			if (!stats.Contains((Stats)statsIndex))
 				stats.Add((Stats)statsIndex);
 		}
-
-		//for (int i = 0; i < (int)Modifier; i++) {
-		//	int statsIndex = random.Next (0, Enum.GetNames (typeof(Stats)).Length);
-		//	stats.Add((Stats)statsIndex);
-		//}
 		return stats;
 	}
 
@@ -148,17 +149,17 @@ public class BaseItem
 
 	private int RollAttributeStatValue()
 	{
-		return random.Next(1, (int)Math.Ceiling(levelRequirement/5d)*5);
+		return random.Next(1, (int)Math.Ceiling((LevelRequirement + 1)/5d) * 5);
 	}
 
 	private int RollEnhancedEffectStatValue()
 	{
-		return random.Next(1, 40 + ((int)Math.Ceiling(levelRequirement/5d) * 20));
+		return random.Next(1, 40 + ((int)Math.Ceiling((LevelRequirement + 1) / 5d) * 20));
 	}
 
 	private int RollAccessoryStatValue()
 	{
-		return random.Next(1, (int)Math.Ceiling(levelRequirement/5d) * 5);
+		return random.Next(1, (int)Math.Ceiling((LevelRequirement + 1) / 5d) * 5);
 	}
 }
 

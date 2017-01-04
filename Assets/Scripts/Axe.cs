@@ -12,6 +12,7 @@ public class Axe : BaseWeapon
 		else
 			itemScale = 1.5;
 		randomFactor = .1;
-	}
+        Modifier = Modifiers.NORMAL;
+    }
 }
 

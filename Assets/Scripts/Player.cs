@@ -1,27 +1,17 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts
-{
-    public class Player
+public class Player : BaseEntity
     {
         private Classes characterClass;
         private Guid characterId;
-        private int level;
-        private int currentHP;
-        private int maxHP;
         private int currentMP;
         private int maxMP;
-        private int strength;
-        private int intelligence;
-        private int dexterity;
-        private int stamina;
         private int attributes;
-        private Weapon equippedWeapon;
-        private string name;
-        private Range<int> damagePotential;
+        private BaseWeapon equippedWeapon;
         private double currentExperience;
         private double maxExperience;
         private double gold;
@@ -30,16 +20,6 @@ namespace Assets.Scripts
         private float criticalStrikeChance;
         private float modifiedCriticalStrikeChance;
 
-        public int Level
-        {
-            get { return level; }
-            set { level = value; }
-        }
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
         public int CurrentMP
         {
             get { return currentMP; }
@@ -49,27 +29,6 @@ namespace Assets.Scripts
         {
             get { return maxMP; }
             set { maxMP = value; }
-        }
-        public int CurrentHP
-        {
-            get { return currentHP; }
-            set
-            {
-                currentHP = value;
-            }
-        }
-        public int MaxHP
-        {
-            get { return maxHP; }
-            set { maxHP = value; }
-        }
-        public Range<int> DamagePotential
-        {
-            get
-            {
-                Range<int> strengthPotential = new Range<int>(0, Math.Floor(Convert.ToDouble(strength / 5)));
-                return strengthPotential.addRange(EquippedWeapon.Damage);
-            }
         }
         public double CurrentExperience
         {
@@ -100,61 +59,6 @@ namespace Assets.Scripts
                 maxExperience = value;
             }
         }
-        public int Intelligence
-        {
-            get
-            {
-                return intelligence;
-            }
-            set
-            {
-                intelligence = value;
-            }
-        }
-        public int Strength
-        {
-            get
-            {
-                return strength;
-            }
-            set
-            {
-                strength = value;
-            }
-        }
-        public int Stamina
-        {
-            get
-            {
-                return stamina;
-            }
-            set
-            {
-                stamina = value;
-            }
-        }
-        public int Dexterity
-        {
-            get
-            {
-                return dexterity;
-            }
-            set
-            {
-                dexterity = value;
-            }
-        }
-        public Weapon EquippedWeapon
-        {
-            get
-            {
-                return equippedWeapon;
-            }
-            set
-            {
-                equippedWeapon = value;
-            }
-        }
         public int Attributes
         {
             get { return attributes; }
@@ -175,20 +79,20 @@ namespace Assets.Scripts
 
         public Player()
         {
-            level = 1;
-            strength = 10;
-            intelligence = 10;
-            dexterity = 10;
-            stamina = 10;
-            attributes = 10;
-            modifiedCriticalStrikeChance = .05F;
-            maxHP = currentHP = CalculateMaxHP();
+            Level = 1;
+            Strength = 10;
+            Intelligence = 10;
+            Dexterity = 10;
+            Stamina = 10;
+            Attributes = 10;
+            ModifiedCriticalStrikeChance = .05F;
+            MaxHP = CurrentHP = CalculateMaxHP();
             maxMP = currentMP = CalculateMaxMP();
             currentExperience = 0;
             maxExperience = CalculateMaxExperience();
-            equippedWeapon = new Weapon();
-            name = "FuckYou";
+            Name = "Negative";
             healthRegenerationRate = CalculateHealthRegenerationRate();
+            EquippedWeapon = new Axe(Level);
         }
 
         private int CalculateClassHPModifier()
@@ -209,7 +113,7 @@ namespace Assets.Scripts
         private int CalculateMaxHP()
         {
             int staminaMod = Stamina * 5;
-            int levelMod = level * CalculateClassHPModifier();
+            int levelMod = Level * CalculateClassHPModifier();
 			return staminaMod + levelMod;
         }
 
@@ -230,14 +134,14 @@ namespace Assets.Scripts
 
         private int CalculateMaxMP()
         {
-            int intelligenceMod = Intelligence * 10;
-            int levelMod = level * CalculateClassMPModifier();
-            return Intelligence + levelMod;
+            int intelligenceMod = Intelligence * 5;
+            int levelMod = Level * CalculateClassMPModifier();
+            return intelligenceMod + levelMod;
         }
 
         public void LevelUp()
         {
-            level++;
+            Level++;
             MaxHP = CurrentHP = CalculateMaxHP();
             MaxMP = CurrentMP = CalculateMaxMP();
             MaxExperience = CalculateMaxExperience();
@@ -250,7 +154,7 @@ namespace Assets.Scripts
 
         private double CalculateMaxExperience()
         {
-            return Math.Pow(level, 2) / .05;
+            return Math.Pow(Level, 2) / .05;
         }
 
         private int CalculateHealthRegenerationRate()
@@ -265,7 +169,6 @@ namespace Assets.Scripts
 
         private float CalculateCriticalStrikeChance()
         {
-            return modifiedCriticalStrikeChance * dexterity;
+            return modifiedCriticalStrikeChance * Dexterity;
         }
     }
-}

@@ -60,7 +60,7 @@ public class CombatManager : MonoBehaviour
         {
             //Player was killed
             GameManager.instance.Player.CurrentHP = 0;
-            GameManager.instance.Player.CurrentExperience -= 3000;
+            GameManager.instance.Player.CurrentExperience -= Math.Round(GameManager.instance.Player.CurrentExperience * .1);
             SceneManager.LoadScene("Death");
         }
         else
@@ -74,7 +74,7 @@ public class CombatManager : MonoBehaviour
     {
         int randomInt = random.Next(0, 100);
         bool isCriticalStrike = randomInt <= (GameManager.instance.Player.CriticalStrikeChance * 100);
-        int unModifiedPlayerDamage = GameManager.instance.Player.DamagePotential.nextInt();
+        int unModifiedPlayerDamage = GameManager.instance.Player.CalculateDamage();
         int modifiedPlayerDamage = isCriticalStrike ? (int)Math.Floor(unModifiedPlayerDamage * 1.5) : unModifiedPlayerDamage;
         return new DamageTaken(0, isCriticalStrike, modifiedPlayerDamage, false);
     }
